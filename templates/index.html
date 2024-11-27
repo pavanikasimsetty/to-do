@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievr</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5e8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .card h1 {
+            font-size: 3em;
+            color: #ff6600;
+            margin-bottom: 20px;
+            font-family: 'Dancing Script', cursive; /* Cursive font */
+        }
+        .card p {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .card button {
+            margin: 10px 0;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-primary {
+            background-color: #007bff;
+        }
+        .image-container img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #777;
+            font-size: 0.9em;
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Achievr</h1>
+            <p>Organize your tasks effectively!</p>
+            <div id="auth-buttons">
+                <!-- Buttons will be dynamically added here -->
+            </div>
+        </div>
+        <div class="image-container">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4MSY1DH_bpgEuJMZnMEXl6xrmEpAOQjzZ0g&" alt="Task Organizer Image">
+        </div>
+    </div>
+    <footer>
+        Created with ❤️ using Flask
+    </footer>
+
+    <script>
+        // Backend URL
+        const authStatusUrl = "http://44.211.220.201:5000/auth-status";
+
+        // Fetch authentication status
+        fetch(authStatusUrl)
+            .then(response => response.json())
+            .then(data => {
+                const authButtons = document.getElementById('auth-buttons');
+                if (data.authenticated) {
+                    // If user is authenticated, show To-Do List and Logout buttons
+                    authButtons.innerHTML = `
+                        <a href="http://44.211.220.201:5000/todo">
+                            <button class="btn btn-success">Go to To-Do List</button>
+                        </a>
+                        <a href="http://44.211.220.201:5000/logout">
+                            <button class="btn btn-danger">Logout</button>
+                        </a>
+                    `;
+                } else {
+                    // If user is not authenticated, show Login and Register buttons
+                    authButtons.innerHTML = `
+                        <a href="http://44.211.220.201:5000/login">
+                            <button class="btn btn-primary">Login</button>
+                        </a>
+                        <a href="http://44.211.220.201:5000/register">
+                            <button class="btn btn-success">Register</button>
+                        </a>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching auth status:', error);
+                const authButtons = document.getElementById('auth-buttons');
+                authButtons.innerHTML = `<p style="color:red;">Error fetching authentication status. Please try again later.</p>`;
+            });
+    </script>
+</body>
+</html>
